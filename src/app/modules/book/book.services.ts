@@ -62,6 +62,11 @@ const getAllBooks = async (
   };
 };
 
+const getSingleBook = async (id: string) => {
+  const result = await Book.findById({ _id: id });
+  return result;
+};
+
 const addBook = async (book: IBook) => {
   const result = await Book.create(book);
   return result;
@@ -69,5 +74,6 @@ const addBook = async (book: IBook) => {
 
 export const BookService = {
   getAllBooks,
+  getSingleBook,
   addBook,
 };

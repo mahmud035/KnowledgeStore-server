@@ -5,6 +5,8 @@ import validateRequest from '../../middlewares/validateRequest';
 
 const router = express.Router();
 
+router.get('/:id', BookController.getSingleBook);
+
 router.get('/', BookController.getAllBooks);
 
 router.post(
