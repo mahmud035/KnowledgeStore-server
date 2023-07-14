@@ -79,10 +79,25 @@ const getReadingList = async (userId: string) => {
   return books;
 };
 
+const getFinishedList = async (userId: string) => {
+  const user: IUser | null = await User.findById(userId)
+    .select('finishedBooks')
+    .lean();
+
+  const finishedList = user?.finishedBooks;
+
+  const books: IBook[] = await Book.find({
+    _id: { $in: finishedList },
+  });
+
+  return books;
+};
+
 export const UserService = {
   addToWishlist,
   getWishlist,
   addToReadingList,
   markAsFinished,
   getReadingList,
+  getFinishedList,
 };

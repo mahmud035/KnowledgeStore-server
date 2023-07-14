@@ -12,6 +12,8 @@ router.post('/reading-list/finish', auth(), UserController.markAsFinished);
 
 router.get('/reading-list', auth(), UserController.getReadingList);
 
+router.get('/finish-list', auth(), UserController.getFinishedList);
+
 router.get('/wishlist', auth(), UserController.getWishlist);
 
 export const UserRoutes = router;
