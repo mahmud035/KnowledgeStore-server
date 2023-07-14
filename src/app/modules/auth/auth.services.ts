@@ -80,13 +80,13 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
 
-  const { _id, role, contactNumber } = verifiedToken; // _id, role, contactNumber ache.
+  const { _id, userEmail, userPassword } = verifiedToken; // _id, userEmail, userPassword ache.
 
   //* (ii) checking deleted user's refreshToken
   const user = new User(); // Instance Method
 
   // access to our instance methods
-  const isUserExist = await user.isUserExist(contactNumber);
+  const isUserExist = await user.isUserExist(userEmail);
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
@@ -94,7 +94,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 
   //* (iii) generate new accessToken
   const newAccessToken = jwtHelper.createToken(
-    { _id, role, contactNumber },
+    { _id, userEmail, userPassword },
     config.jwt.access_token_secret as Secret,
     config.jwt.access_token_expires_in as string
   );
