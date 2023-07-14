@@ -59,9 +59,23 @@ const markAsFinished = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getReadingList = catchAsync(async (req: Request, res: Response) => {
+  const userId = req?.user?._id;
+
+  const result = await UserService.getReadingList(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Reading list retrieved successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   addToWishlist,
   getWishlist,
   addToReadingList,
   markAsFinished,
+  getReadingList,
 };

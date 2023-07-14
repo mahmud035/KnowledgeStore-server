@@ -10,6 +10,8 @@ router.post('/reading-list/add', auth(), UserController.addToReadingList);
 
 router.post('/reading-list/finish', auth(), UserController.markAsFinished);
 
+router.get('/reading-list', auth(), UserController.getReadingList);
+
 router.get('/wishlist', auth(), UserController.getWishlist);
 
 export const UserRoutes = router;
