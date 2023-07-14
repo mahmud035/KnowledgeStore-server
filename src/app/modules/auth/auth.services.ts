@@ -22,14 +22,14 @@ const createUser = async (user: IUser): Promise<IUser> => {
 };
 
 const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
-  const { phoneNumber, password } = payload;
+  const { email, password } = payload;
 
   //* (i) Check user exists or not
   // creating instance of User
   const user = new User(); // Instance Method
 
   // access to our instance methods
-  const isUserExist = await user.isUserExist(phoneNumber);
+  const isUserExist = await user.isUserExist(email);
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
@@ -45,16 +45,16 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
 
   //* (iii) Generate accessToken and refreshToken using jwtHelper utility function
 
-  const { _id, role, phoneNumber: contactNumber } = isUserExist;
+  const { _id, email: userEmail, password: userPassword } = isUserExist;
 
   const accessToken = jwtHelper.createToken(
-    { _id, role, contactNumber },
+    { _id, userEmail, userPassword },
     config.jwt.access_token_secret as Secret,
     config.jwt.access_token_expires_in as string
   );
 
   const refreshToken = jwtHelper.createToken(
-    { _id, role, contactNumber },
+    { _id, userEmail, userPassword },
     config.jwt.refresh_token_secret as Secret,
     config.jwt.refresh_token_expires_in as string
   );

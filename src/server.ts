@@ -26,6 +26,7 @@ let server: Server;
 const dbConnect = async () => {
   try {
     await mongoose.connect(config.database_url as string);
+    // console.log(config.database_url);
 
     console.log(`Database Connected`.yellow.italic);
 

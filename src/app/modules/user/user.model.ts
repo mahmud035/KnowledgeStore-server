@@ -9,7 +9,7 @@ const bcryptHash = promisify(bcrypt.hash); // Promisify the `bcrypt.hash` functi
 
 const UserSchema = new Schema<IUser, Record<string, never>, IUserMethods>(
   {
-    phoneNumber: {
+    email: {
       type: String,
       required: true,
       unique: true,
@@ -18,33 +18,6 @@ const UserSchema = new Schema<IUser, Record<string, never>, IUserMethods>(
       type: String,
       required: true,
       select: false, // Set select to false to exclude the field by default
-    },
-    role: {
-      type: String,
-      enum: ['seller', 'buyer'],
-      required: true,
-    },
-    name: {
-      firstName: {
-        type: String,
-        required: true,
-      },
-      lastName: {
-        type: String,
-        required: true,
-      },
-    },
-    address: {
-      type: String,
-      required: true,
-    },
-    budget: {
-      type: Number,
-      required: true,
-    },
-    income: {
-      type: Number,
-      required: true,
     },
   },
   {
@@ -60,15 +33,14 @@ const UserSchema = new Schema<IUser, Record<string, never>, IUserMethods>(
 
 // Instance Method
 UserSchema.methods.isUserExist = async function (
-  phoneNumber: string
+  email: string
 ): Promise<Partial<IUser> | null> {
   return await User.findOne(
-    { phoneNumber: phoneNumber },
+    { email: email },
     {
       _id: 1,
-      role: 1,
       password: 1,
-      phoneNumber: 1,
+      email: 1,
     }
   );
 };
@@ -87,13 +59,6 @@ UserSchema.methods.isPasswordMatched = async function (
 UserSchema.pre('save', async function (next) {
   const user = this;
   // console.log(user);
-
-  // Before:
-  // user.password = await bcrypt.hash(
-  //   user.password,
-  //   Number(config.bcrypt_salt_rounds)
-  // );
-  // next();
 
   // After:
   // Check if the password is already hashed (bcrypt returns a hash with 60 characters)
