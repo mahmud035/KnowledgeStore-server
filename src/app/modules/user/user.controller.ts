@@ -18,4 +18,20 @@ const addToWishlist = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const UserController = { addToWishlist };
+const getWishlist = catchAsync(async (req: Request, res: Response) => {
+  const userId = req?.user?._id;
+
+  const result = await UserService.getWishlist(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Wishlist retrieved successfully',
+    data: result,
+  });
+});
+
+export const UserController = {
+  addToWishlist,
+  getWishlist,
+};
