@@ -5,6 +5,7 @@ export type IUser = {
   _id: ObjectId;
   email: string;
   password: string;
+  wishlist?: string[];
 };
 
 // Instance Method

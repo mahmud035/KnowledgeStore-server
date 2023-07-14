@@ -19,6 +19,9 @@ const UserSchema = new Schema<IUser, Record<string, never>, IUserMethods>(
       required: true,
       select: false, // Set select to false to exclude the field by default
     },
+    wishlist: {
+      type: [String],
+    },
   },
   {
     timestamps: true,
