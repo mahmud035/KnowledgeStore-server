@@ -22,6 +22,19 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const addBook = catchAsync(async (req: Request, res: Response) => {
+  const { ...bookData } = req.body;
+  const result = await BookService.addBook(bookData);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Book added successfully',
+    data: result,
+  });
+});
+
 export const BookController = {
   getAllBooks,
+  addBook,
 };

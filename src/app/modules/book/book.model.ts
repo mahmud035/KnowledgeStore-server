@@ -12,6 +12,10 @@ const BookSchema = new Schema<IBook, Record<string, never>>(
       type: String,
       required: true,
     },
+    email: {
+      type: String,
+      required: true,
+    },
     genre: {
       type: String,
       required: true,

@@ -1,7 +1,7 @@
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { bookSearchableFields } from './book.constant';
-import { IBookFilters } from './book.interface';
+import { IBook, IBookFilters } from './book.interface';
 import { Book } from './book.model';
 import { SortOrder } from 'mongoose';
 
@@ -62,6 +62,12 @@ const getAllBooks = async (
   };
 };
 
+const addBook = async (book: IBook) => {
+  const result = await Book.create(book);
+  return result;
+};
+
 export const BookService = {
   getAllBooks,
+  addBook,
 };
