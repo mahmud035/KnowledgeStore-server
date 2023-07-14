@@ -43,8 +43,28 @@ const addToReadingList = async (userId: string, bookId: string) => {
   return result;
 };
 
+const markAsFinished = async (userId: string, bookId: string) => {
+  const result = await User.findByIdAndUpdate(
+    userId,
+    {
+      $addToSet: {
+        finishedBooks: bookId,
+      },
+      $pull: {
+        readingList: bookId, // remove BookId from readingList
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  return result;
+};
+
 export const UserService = {
   addToWishlist,
   getWishlist,
   addToReadingList,
+  markAsFinished,
 };

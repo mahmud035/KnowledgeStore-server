@@ -45,8 +45,23 @@ const addToReadingList = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const markAsFinished = catchAsync(async (req: Request, res: Response) => {
+  const userId = req?.user?._id;
+  const bookId = req.body.bookId;
+
+  const result = await UserService.markAsFinished(userId, bookId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Book marked as finished successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   addToWishlist,
   getWishlist,
   addToReadingList,
+  markAsFinished,
 };
