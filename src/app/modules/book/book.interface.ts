@@ -9,3 +9,7 @@ export type IBook = {
 };
 
 export type IBookModel = Model<IBook, Record<string, unknown>>;
+
+export type IBookFilters = {
+  searchTerm?: string;
+};
