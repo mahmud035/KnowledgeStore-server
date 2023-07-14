@@ -11,7 +11,18 @@ import {
   IRefreshTokenResponse,
 } from './auth.interface';
 
-const createUser = async (user: IUser): Promise<IUser> => {
+const createUser = async (user: IUser): Promise<IUser | null> => {
+  const emailExist = await User.findOne(
+    { email: user.email },
+    { email: 1, _id: 0 }
+  );
+  console.log(emailExist, 'auth.services.ts');
+
+  // FIXME: Error isn't send to the client! Server crashed
+  if (emailExist?.email) {
+    throw new Error('Email already in use.');
+  }
+
   const createdUser = await User.create(user);
 
   if (!createdUser) {
