@@ -72,6 +72,11 @@ const addBook = async (book: IBook) => {
   return result;
 };
 
+const updateBook = async (id: string, book: Partial<IBook>) => {
+  const result = await Book.findByIdAndUpdate({ _id: id }, book, { new: true });
+  return result;
+};
+
 const deleteBook = async (id: string) => {
   const result = await Book.findByIdAndDelete({ _id: id });
   return result;
@@ -81,5 +86,6 @@ export const BookService = {
   getAllBooks,
   getSingleBook,
   addBook,
+  updateBook,
   deleteBook,
 };
