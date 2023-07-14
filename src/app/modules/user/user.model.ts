@@ -39,8 +39,8 @@ UserSchema.methods.isUserExist = async function (
     { email: email },
     {
       _id: 1,
-      password: 1,
       email: 1,
+      password: 1,
     }
   );
 };
@@ -60,7 +60,6 @@ UserSchema.pre('save', async function (next) {
   const user = this;
   // console.log(user);
 
-  // After:
   // Check if the password is already hashed (bcrypt returns a hash with 60 characters)
   if (user.isModified('password') && user.password.length < 60) {
     try {
