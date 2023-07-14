@@ -22,6 +22,12 @@ const UserSchema = new Schema<IUser, Record<string, never>, IUserMethods>(
     wishlist: {
       type: [String],
     },
+    readingList: {
+      type: [String],
+    },
+    finishedBooks: {
+      type: [String],
+    },
   },
   {
     timestamps: true,

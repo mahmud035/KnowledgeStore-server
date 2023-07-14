@@ -6,6 +6,8 @@ export type IUser = {
   email: string;
   password: string;
   wishlist?: string[];
+  readingList?: string[];
+  finishedBooks?: string[];
 };
 
 // Instance Method

@@ -29,7 +29,22 @@ const getWishlist = async (userId: string) => {
   return books;
 };
 
+const addToReadingList = async (userId: string, bookId: string) => {
+  const result = await User.findByIdAndUpdate(
+    userId,
+    {
+      $addToSet: {
+        readingList: bookId,
+      },
+    },
+    { new: true }
+  );
+
+  return result;
+};
+
 export const UserService = {
   addToWishlist,
   getWishlist,
+  addToReadingList,
 };
