@@ -2,6 +2,7 @@ import express from 'express';
 import { BookController } from './book.controller';
 import { BookValidation } from './book.validation';
 import validateRequest from '../../middlewares/validateRequest';
+import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
@@ -12,11 +13,12 @@ router.get('/', BookController.getAllBooks);
 router.post(
   '/add-book',
   validateRequest(BookValidation.addBookZodSchema),
+  auth(),
   BookController.addBook
 );
 
-router.patch('/:id', BookController.updateBook);
+router.patch('/:id', auth(), BookController.updateBook);
 
-router.delete('/:id', BookController.deleteBook);
+router.delete('/:id', auth(), BookController.deleteBook);
 
 export const BookRoutes = router;

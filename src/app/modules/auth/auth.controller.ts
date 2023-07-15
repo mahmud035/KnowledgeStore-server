@@ -8,7 +8,7 @@ import { ILoginUserResponse, IRefreshTokenResponse } from './auth.interface';
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const { ...userData } = req.body;
-  const result = await AuthService.createUser(userData);
+  const result = await AuthService.createUser(userData, res);
 
   sendResponse(res, {
     success: true,
@@ -20,7 +20,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
-  const result = await AuthService.loginUser(loginData);
+  const result = await AuthService.loginUser(loginData, res);
   const { refreshToken, ...othersInfo } = result;
 
   //* Set refreshToken into cookie

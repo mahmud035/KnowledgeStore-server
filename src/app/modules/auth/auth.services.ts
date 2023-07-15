@@ -10,16 +10,27 @@ import {
   ILoginUserResponse,
   IRefreshTokenResponse,
 } from './auth.interface';
+import { Response } from 'express';
 
-const createUser = async (user: IUser): Promise<IUser | null> => {
+const createUser = async (
+  user: IUser,
+  res: Response
+): Promise<IUser | null> => {
   const emailExist = await User.findOne(
     { email: user.email },
     { email: 1, _id: 0 }
   );
-  console.log(emailExist, 'auth.services.ts');
+  // console.log(emailExist, 'auth.services.ts');
 
   // FIXME: Error isn't send to the client! Server crashed
   if (emailExist?.email) {
+    // TEMPORARY SOLUTION
+    res.json({
+      success: false,
+      statusCode: httpStatus.BAD_REQUEST,
+      message: 'Email already exists. Use new email address.',
+    });
+
     throw new Error('Email already in use.');
   }
 
@@ -32,7 +43,10 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
   return createdUser;
 };
 
-const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
+const loginUser = async (
+  payload: ILoginUser,
+  res: Response
+): Promise<ILoginUserResponse> => {
   const { email, password } = payload;
 
   //* (i) Check user exists or not
@@ -43,6 +57,13 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   const isUserExist = await user.isUserExist(email);
 
   if (!isUserExist) {
+    // TEMPORARY SOLUTION
+    res.json({
+      success: false,
+      statusCode: httpStatus.NOT_FOUND,
+      message: 'User does not exist. Provide a valid email address.',
+    });
+
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
 
@@ -51,6 +72,13 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
     isUserExist.password &&
     !(await user.isPasswordMatched(password, isUserExist.password))
   ) {
+    // TEMPORARY SOLUTION
+    res.json({
+      success: false,
+      statusCode: httpStatus.UNAUTHORIZED,
+      message: 'Password is incorrect',
+    });
+
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
 
