@@ -8,6 +8,9 @@ const addToWishlist = catchAsync(async (req: Request, res: Response) => {
   const userId = req?.user?._id;
   const bookId = req.body.bookId;
 
+  // console.log(userId, bookId, 'from controller');
+  // console.log(req.body);
+
   const result = await UserService.addToWishlist(userId, bookId);
 
   sendResponse(res, {

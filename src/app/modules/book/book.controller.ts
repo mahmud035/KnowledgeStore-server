@@ -62,7 +62,6 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
 const addReview = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const review = req.body.review;
-  console.log(id, review, 'from controller');
 
   const result = await BookService.addReview(id, review);
 
