@@ -10,14 +10,16 @@ router.get('/:id', BookController.getSingleBook);
 
 router.get('/', BookController.getAllBooks);
 
+router.patch('/:id', auth(), BookController.updateBook);
+
+router.patch('/add-review/:id', auth(), BookController.addReview);
+
 router.post(
   '/add-book',
   validateRequest(BookValidation.addBookZodSchema),
   auth(),
   BookController.addBook
 );
-
-router.patch('/:id', auth(), BookController.updateBook);
 
 router.delete('/:id', auth(), BookController.deleteBook);
 
