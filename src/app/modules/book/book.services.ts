@@ -73,8 +73,23 @@ const addBook = async (book: IBook) => {
 };
 
 const updateBook = async (id: string, book: Partial<IBook>) => {
-  const result = await Book.findByIdAndUpdate({ _id: id }, book, { new: true });
-  return result;
+  const bookExist = await Book.findById(id);
+
+  if (!bookExist) {
+    return null;
+  }
+
+  // Merge the existing reviews with the updated data
+  const updatedData = {
+    ...book,
+    reviews: book.reviews,
+  };
+
+  const updatedBook = await Book.findByIdAndUpdate(id, updatedData, {
+    new: true,
+  });
+
+  return updatedBook;
 };
 
 const addReview = async (bookId: string, review: string) => {
